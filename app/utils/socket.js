@@ -13,6 +13,25 @@ exports.handleSocketConnection = (io) => {
       io.emit("get_user_list", { status: true, data: user_list });
     });
 
+    //send msg;
+    socket.on("send_msg", (data) => {
+     let clientId = IP_CLIENTID.data["receiver_id"];
+     MSG_CONTAINER.push(data);
+     io.to(clientId).emit("receive_msg",{ "status" : true, "data": data });
+    });
+
+    //to get chat history
+    socket.on("get_msg",(data)=>{
+     let clientId = IP_CLIENTID.data["sender_id"];
+     let msg_records = MSG_CONTAINER.filter((obj)=>{
+      if((obj["receiver_id"] == data["receiver_id"] || obj["sender_id"] == data["sender_id"]) 
+       && (obj["receiver_id"] == data["sender_id"] || obj["sender_id"] == data["receiver_id"])){
+        return obj;
+      }
+     });
+     io.to(clientId).emit("all_msg", { "status":true , "data":msg_records });
+    })
+
     //startGame
     // socket.on('start',(data)=>{
     //     let gameId = data['gameId'];
@@ -33,26 +52,3 @@ exports.handleSocketConnection = (io) => {
     // })
   });
 };
-
-// // Handle client joining a room
-// socket.on('joinRoom', (roomName) => {
-//     console.log(`User ${socket.id} joining room: ${roomName}`);
-//     socket.join(roomName);
-// });
-
-// // Handle a custom event to send a message to all clients in a room
-// socket.on('sendMessageToRoom', (roomName, message) => {
-//     console.log(`Sending message to room ${roomName}: ${message}`);
-//     io.to(roomName).emit('message', { user: socket.id, message });
-// });
-
-// // Broadcast a message to all connected clients
-// socket.on('sendMessageToAll', (message) => {
-//     console.log(`Sending message to all clients: ${message}`);
-//     io.emit('broadcastMessage', { user: socket.id, message });
-// });
-
-// // Handle disconnect event
-// socket.on('disconnect', () => {
-//     console.log(`User ${socket.id} disconnected`);
-// });
