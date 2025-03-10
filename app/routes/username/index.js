@@ -4,3 +4,4 @@ routes.post("/",(req,res,next)=>{
  usernameCtrl.join(req,res,next)
 })
 module.exports = routes
+//testing
