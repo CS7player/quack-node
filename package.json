@@ -4,7 +4,7 @@
   "description": "To communicate in local scope",
   "main": "app.js",
   "scripts": {
-    "dev":"nodemon app.js",
+    "dev": "nodemon app.js",
     "test": "test"
   },
   "keywords": [
@@ -15,6 +15,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "nodemon": "^3.1.9",
     "socket.io": "^4.8.1"
   }
 }
