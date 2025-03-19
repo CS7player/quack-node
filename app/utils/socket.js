@@ -15,7 +15,7 @@ exports.handleSocketConnection = (io) => {
 
   //send msg;
   socket.on("send_msg", (data) => {
-   let clientId = IP_CLIENTID?.data?.["receiver_id"];
+   let clientId = IP_CLIENTID[data?.["receiver_id"]] || "";
    MSG_CONTAINER.push(data);
    io.to(clientId).emit("receive_msg", { "status": true, "data": data });
   });
@@ -23,7 +23,7 @@ exports.handleSocketConnection = (io) => {
   //to get chat history
   socket.on("get_msg", (data) => {
    let clientId = IP_CLIENTID[data?.["sender_id"]] || "";
-   let msg_records = MSG_CONTAINER.filter((obj) => 
+   let msg_records = MSG_CONTAINER.filter((obj) =>
     (obj["receiver_id"] === data["receiver_id"] && obj["sender_id"] === data["sender_id"]) ||
     (obj["receiver_id"] === data["sender_id"] && obj["sender_id"] === data["receiver_id"])
    );
