@@ -20,7 +20,7 @@ exports.handleSocketConnection = (io) => {
    io.to(clientId).emit("receive_msg", { "status": true, "data": data });
   });
 
-  //to get chat history
+  //to get chat history;
   socket.on("get_msg", (data) => {
    let clientId = IP_CLIENTID[data?.["sender_id"]] || "";
    let msg_records = MSG_CONTAINER.filter((obj) =>
@@ -29,6 +29,13 @@ exports.handleSocketConnection = (io) => {
    );
    if (clientId)
     io.to(clientId).emit("all_msg", { "status": true, "data": msg_records });
+  })
+
+  //logout;
+  socket.on("logout", (data) => {
+   delete IP_USERNAME[data?.["sender_id"]];
+   let user_list = util.user_list();
+   io.emit("get_user_list", { status: true, data: user_list });
   })
 
  });
