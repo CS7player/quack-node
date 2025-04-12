@@ -19,3 +19,4 @@ EXPOSE 4444
 # Command to run the app
 CMD ["npm", "run","dev"]
 
+
